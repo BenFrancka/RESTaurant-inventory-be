@@ -41,4 +41,33 @@ describe('inventory rouotes', () => {
 
     expect(res.body).toEqual(potatoes);
   });
+
+  it('gets all inventory items using GET', async () => {
+    const potatoes = await Inventory.insert({
+      itemName: 'potatoes',
+      category: 'produce',
+      itemPrice: 7,
+      totalItems: 3,
+      totalPrice: 21,
+    });
+
+    const spinach = await Inventory.insert({
+      itemName: 'spinach',
+      category: 'produce',
+      itemPrice: 5,
+      totalItems: 3,
+      totalPrice: 15,
+    });
+
+    const sharpCheddar = await Inventory.insert({
+      itemName: 'sharp cheddar',
+      category: 'dairy',
+      itemPrice: 20,
+      totalItems: 1,
+      totalPrice: 20,
+    });
+    const res = await request(app).get('/api/v1/inventory/');
+
+    expect(res.body).toEqual([potatoes, spinach, sharpCheddar]);
+  });
 });
