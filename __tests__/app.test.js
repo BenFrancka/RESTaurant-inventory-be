@@ -70,4 +70,23 @@ describe('inventory rouotes', () => {
 
     expect(res.body).toEqual([potatoes, spinach, sharpCheddar]);
   });
+
+  it('updates an inventory item using PUT', async () => {
+    const potatoes = await Inventory.insert({
+      itemName: 'potatoes',
+      category: 'produce',
+      itemPrice: 7,
+      totalItems: 3,
+      totalPrice: 21,
+    });
+    const res = await request(app)
+      .put(`/api/v1/inventory/${potatoes.id}`)
+      .send({ totalItems: 2, totalPrice: 14 });
+
+    expect(res.body).toEqual({
+      ...potatoes,
+      totalItems: 2,
+      totalPrice: 14,
+    });
+  });
 });
