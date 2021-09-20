@@ -89,4 +89,19 @@ describe('inventory rouotes', () => {
       totalPrice: 14,
     });
   });
+
+  it('deletes an inventory item by id using DELETE', async () => {
+    const potatoes = await Inventory.insert({
+      itemName: 'potatoes',
+      category: 'produce',
+      itemPrice: 7,
+      totalItems: 3,
+      totalPrice: 21,
+    });
+    const res = await request(app).delete(`/api/v1/inventory/${potatoes.id}`);
+
+    expect(res.body).toEqual({
+      message: `${potatoes.itemName} removed from inventory`,
+    });
+  });
 });
